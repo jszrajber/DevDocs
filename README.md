@@ -7,12 +7,13 @@ RAG-based assistant for FastAPI documentation. Built with LangGraph, LangChain a
 - **LangChain** — LLM tooling
 - **Ollama** — local LLM (llama3.2, nomic-embed-text)
 - **FAISS** — vector store (dev), PostgreSQL + PGVector (planned)
-- **FastAPI** — API layer
+- **FastAPI** — API layer   
+- **SentenceTransformers** — reranking
 
 ## Status
 Active development. Planned:
 - [ ] PGVector + PostgreSQL
-- [ ] Reranking
+- [x] Reranking (cross-encoder/ms-marco-MiniLM-L-6-v2)
 - [ ] Streaming responses
 - [ ] Multi-document support
 
