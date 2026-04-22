@@ -2,6 +2,7 @@ from ..state import State
 from langchain_core.prompts import ChatPromptTemplate
 from app.schemas.request import SafetyCheck
 from app.config.llm import llm
+from app.config.logger import logger
 
 model = llm.with_structured_output(SafetyCheck)
 
@@ -30,6 +31,8 @@ safety_chain = prompt | model
 
 def is_safe_node(state: State) -> dict:
     question = state['question']
+
+    logger.info(f"Safety check for question: {question}")
 
     result = safety_chain.invoke({
         "question": question

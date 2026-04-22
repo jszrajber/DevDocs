@@ -3,6 +3,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from app.config.llm import llm
 from langchain_core.output_parsers import StrOutputParser
 # from app.schemas.response import Answer
+from app.config.logger import logger
 
 model = llm
 
@@ -24,6 +25,9 @@ def format_docs(docs) -> str:
 
 def answer_node(state: State) -> dict:
     question = state["question"]
+
+    logger.info(f"Preparing answer for question: {question}")
+
     context = format_docs(state['docs'])
 
     answer = answer_chain.invoke({

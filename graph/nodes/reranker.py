@@ -1,5 +1,6 @@
 from sentence_transformers import CrossEncoder
 from ..state import State
+from app.config.logger import logger
 
 
 # Reranling model config
@@ -16,7 +17,7 @@ def rerank(question, docs, top_k=3):
     )
 
     top = ranked[:top_k]
-    print(top)
+
     return {
             "docs": [doc for _, doc in top],
             "scores": [float(score) for score, _ in top]
@@ -25,6 +26,9 @@ def rerank(question, docs, top_k=3):
 
 def reranker_node(state: State) -> dict:
     question = state["question"]
+    
+    logger.info(f"Reranking documents for question: {question}")
+    
     docs = state['docs']
     result = rerank(question, docs)
     return {

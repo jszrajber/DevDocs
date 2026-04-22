@@ -26,7 +26,7 @@ uvicorn app.main:app --reload
 
 ## Usage
 ```bash
-curl -X POST http://localhost:8000/chat \
+curl -N -X POST http://localhost:8000/chat \
   -H "Content-Type: application/json" \
-  -d '{"question": "How do I add middleware in FastAPI?"}'
+  -d '{"question": "What is FastAPI?"}'
 ```

@@ -3,6 +3,7 @@ from langchain_postgres import PGVector
 from app.ingestion.process import embeddings
 from app.config.settings import settings
 from langchain_community.vectorstores import FAISS
+from app.config.logger import logger
 
 vectorstore = FAISS.load_local(
         "faiss_index",
@@ -13,13 +14,11 @@ vectorstore = FAISS.load_local(
 retriever = vectorstore.as_retriever(search_kwargs={"k": 10})
 
 
-def format_docs(docs) -> str:
-    return "\n\n".join(doc.page_content for doc in docs)
-
-
 def retrieve_node(state: State) -> dict:
     question = state['question']
 
+    logger.info(f"Retrieving documents for question: {question}")
+    
     # Conenction to vector db
     # vectorstore = PGVector(
     #     embeddings=embeddings,
@@ -28,4 +27,5 @@ def retrieve_node(state: State) -> dict:
     # )
 
     documents = retriever.invoke(question)
+
     return {"docs": documents}
