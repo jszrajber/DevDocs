@@ -14,7 +14,7 @@ RAG-based assistant for FastAPI documentation. Built with LangGraph, LangChain a
 Active development. Planned:
 - [ ] PGVector + PostgreSQL
 - [x] Reranking (cross-encoder/ms-marco-MiniLM-L-6-v2)
-- [ ] Streaming responses
+- [x] Streaming responses
 - [ ] Multi-document support
 
 ## Quickstart
