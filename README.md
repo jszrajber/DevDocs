@@ -21,6 +21,7 @@ Active development. Planned:
 ```bash
 pip install -r requirements.txt
 python -m app.ingestion.process  # build vector index
+docker compose up
 uvicorn app.main:app --reload
 ```
 
