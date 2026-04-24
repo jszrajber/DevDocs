@@ -1,4 +1,6 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+from app.db.deps import get_db
 from .config.logger import setup_logging, logger
 from .schemas.request import QuestionRequest
 from graph.graph import graph_app
@@ -32,13 +34,17 @@ def health_check():
 
 
 @app.post("/chat")
-async def get_response(req: QuestionRequest):
+async def get_response(
+    req: QuestionRequest,
+    # db: AsyncSession = Depends(get_db)
+):
+    question = req.question
 
     # async because of async events inside
     async def generate():
         # Iteration must bye async
         async for event in graph_app.astream_events({    # Method gets every action in graph as dicts
-            "question": req.question
+            "question": question
         }, version="v2"):   # v2 gives more info, new version of event formattting
 
             if event['event'] == "on_chat_model_stream":

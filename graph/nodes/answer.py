@@ -23,14 +23,14 @@ def format_docs(docs) -> str:
     return "\n\n".join(doc.page_content for doc in docs)
 
 
-def answer_node(state: State) -> dict:
+async def answer_node(state: State) -> dict:
     question = state["question"]
 
     logger.info(f"Preparing answer for question: {question}")
 
     context = format_docs(state['docs'])
 
-    answer = answer_chain.invoke({
+    answer = await answer_chain.ainvoke({
         "context": context,
         "question": question
     })

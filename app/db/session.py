@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
-from config.settings import settings
+from ..config.settings import settings
 
 engine = create_async_engine(settings.DATABASE_URL, echo=True, future=True)     # echo shows SQL in terminal, future is for new methods
 

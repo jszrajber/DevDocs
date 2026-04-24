@@ -29,12 +29,12 @@ prompt = ChatPromptTemplate.from_messages([
 safety_chain = prompt | model
 
 
-def is_safe_node(state: State) -> dict:
+async def is_safe_node(state: State) -> dict:
     question = state['question']
 
     logger.info(f"Safety check for question: {question}")
 
-    result = safety_chain.invoke({
+    result = await safety_chain.ainvoke({
         "question": question
     })
 
