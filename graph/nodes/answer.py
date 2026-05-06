@@ -2,7 +2,7 @@ from ..state import State
 from langchain_core.prompts import ChatPromptTemplate
 from app.config.llm import llm
 from langchain_core.output_parsers import StrOutputParser
-# from app.schemas.response import Answer
+from app.schemas.response import Confidence
 from app.config.logger import logger
 
 model = llm
@@ -18,6 +18,12 @@ prompt = ChatPromptTemplate.from_messages([
 
 answer_chain = prompt | model | StrOutputParser()
 
+confidence_prompt = ChatPromptTemplate.from_messages([
+    ("system", "Rate confidence of the answer. Respond with only one word: high, medium or low."),
+    ("user", f"Question: {{question}}\nAnswer: {{answer}}")
+])
+
+confidence_chain = confidence_prompt | model.with_structured_output(Confidence)
 
 def format_docs(docs) -> str:
     return "\n\n".join(doc.page_content for doc in docs)
@@ -34,5 +40,10 @@ async def answer_node(state: State) -> dict:
         "context": context,
         "question": question
     })
+    
+    confidence = await confidence_chain.ainvoke({"question": question, "answer": answer})
 
-    return {"answer": answer}
+    return {
+        "answer": answer,
+        "confidence": confidence.confidence
+        }

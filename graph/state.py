@@ -9,3 +9,4 @@ class State(TypedDict):
     answer: str
     reason: str
     scores: List[float]
+    confidence: str
