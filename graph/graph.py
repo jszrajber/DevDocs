@@ -3,8 +3,8 @@ from .nodes.retrieve import retrieve_node
 from .nodes.is_safe import is_safe_node
 from .nodes.reranker import reranker_node
 from .nodes.answer import answer_node
+from .nodes.summary import summarize_node
 from .state import State
-from .checkpointer import checkpointer
 
 graph = StateGraph(State)
 
@@ -19,6 +19,7 @@ def route_safety(state: State) -> str:
 graph.add_node("retrieve", retrieve_node)
 graph.add_node("is_safe", is_safe_node)
 graph.add_node("reranker", reranker_node)
+graph.add_node("summary", summarize_node)
 graph.add_node("answer", answer_node)
 
 
@@ -33,7 +34,8 @@ graph.add_conditional_edges(
 )
 
 graph.add_edge("retrieve", "reranker")
-graph.add_edge("reranker", "answer")
+graph.add_edge("reranker", "summary")
+graph.add_edge("summary", "answer")
 graph.set_finish_point("answer")
 
 # Compile graph

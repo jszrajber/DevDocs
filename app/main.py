@@ -10,6 +10,7 @@ from sqlalchemy import select
 from langchain.messages import SystemMessage, HumanMessage, AIMessage
 import json
 import uuid
+import re
 
 setup_logging()  # Logger starts with an app
 
@@ -54,7 +55,6 @@ async def get_response(
         .order_by(Conversation.created_at)
     )
     
-    print(f"TUTAJ: {thread_id}")
     history = result.scalars().all()
     
     chat_history = []
@@ -86,11 +86,17 @@ async def get_response(
                         confidence_value = json.loads(output)["confidence"]
                     except (json.JSONDecodeError, KeyError):
                         confidence_value = "unknown"
-                 
+
+                        
+        answer_text = "".join(full_answer)
+        # re.sub changes pattern to empty string
+        # re.DOTALL fits chars to new line
+        answer_text = re.sub(r'\{.*?"confidence".*?\}', '', answer_text, flags=re.DOTALL).strip()
+         
         response = Conversation(
             thread_id=thread_id,
             question=question,
-            answer="".join(full_answer),
+            answer=answer_text,
             confidence=confidence_value
         )
         

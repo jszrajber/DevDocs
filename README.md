@@ -6,7 +6,7 @@ RAG-based assistant for FastAPI documentation. Built with LangGraph, LangChain a
 - **LangGraph** — agent orchestration
 - **LangChain** — LLM tooling
 - **Ollama** — local LLM (llama3.2, nomic-embed-text)
-- **FAISS** — vector store (dev), PostgreSQL + PGVector (planned)
+- **PostgreSQL + PGVector** — vector store     
 - **FastAPI** — API layer   
 - **SentenceTransformers** — reranking
 
@@ -16,6 +16,7 @@ Active development. Planned:
 - [x] Reranking (cross-encoder/ms-marco-MiniLM-L-6-v2)
 - [x] Streaming responses
 - [x] Conversation memory (thread-based)
+- [x] Conversation summarization
 - [ ] Multi-document support
 
 ## Quickstart
@@ -49,3 +50,6 @@ curl -N -X POST http://localhost:8000/chat \
 ```
 
 Omit `thread_id` to start a new conversation.
+
+### Conversation summarization
+Long conversations are automatically summarized to stay within the LLM context window. After 10 messages, the assistant compresses the conversation history into a short summary and retains only the 2 most recent messages, ensuring accurate and efficient responses over extended sessions.
