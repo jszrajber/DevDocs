@@ -54,7 +54,7 @@ async def get_response(
         .order_by(Conversation.created_at)
     )
     
-    print(f"TUTAJ: {result}")
+    print(f"TUTAJ: {thread_id}")
     history = result.scalars().all()
     
     chat_history = []
@@ -100,4 +100,8 @@ async def get_response(
         
         logger.info(f"Record for question: {question} was saved in database")
         
-    return StreamingResponse(generate(), media_type="text/event-stream")
+    return StreamingResponse(
+        generate(),
+        media_type="text/event-stream",
+        headers={"X-Thread-Id": str(thread_id)}     # Adding thread_id to header
+        )
