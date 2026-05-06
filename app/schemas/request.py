@@ -8,6 +8,7 @@ class SafetyCheck(BaseModel):
 
 class QuestionRequest(BaseModel):
     question: str
+    thread_id: str | None = None
 
     @field_validator("question")
     def sanitize(cls, v):

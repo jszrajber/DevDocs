@@ -6,7 +6,10 @@ from .schemas.request import QuestionRequest
 from graph.graph import graph_app
 from fastapi.responses import StreamingResponse
 from app.models.conversation import Conversation
+from sqlalchemy import select
+from langchain.messages import SystemMessage, HumanMessage, AIMessage
 import json
+import uuid
 
 setup_logging()  # Logger starts with an app
 
@@ -14,7 +17,6 @@ setup_logging()  # Logger starts with an app
 app = FastAPI()
 
 logger.info("Application startup: Logging configured successfully")
-
 
 @app.get("/")
 def health_check():
@@ -40,9 +42,25 @@ async def get_response(
     req: QuestionRequest,
     db: AsyncSession = Depends(get_db)
 ):
+    thread_id = uuid.UUID(req.thread_id) if req.thread_id else uuid.uuid4()
+    
     question = req.question
     full_answer = [] # Collecting chunks for db
     confidence_value = "unknown"
+    
+    result = await db.execute(
+        select(Conversation)
+        .where(Conversation.thread_id == thread_id)
+        .order_by(Conversation.created_at)
+    )
+    
+    print(f"TUTAJ: {thread_id}")
+    history = result.scalars().all()
+    
+    chat_history = []
+    for record in history:
+        chat_history.append(HumanMessage(record.question))
+        chat_history.append(AIMessage(record.answer))
 
     # async because of async events inside
     async def generate():
@@ -50,7 +68,8 @@ async def get_response(
         
         # Iteration must bye async
         async for event in graph_app.astream_events({    # Method gets every action in graph as dicts
-            "question": question
+            "question": question,
+            "chat_history": chat_history
         }, version="v2"):   # v2 gives more info, new version of event formattting
 
             if event['event'] == "on_chat_model_stream":
@@ -69,6 +88,7 @@ async def get_response(
                         confidence_value = "unknown"
                  
         response = Conversation(
+            thread_id=thread_id,
             question=question,
             answer="".join(full_answer),
             confidence=confidence_value
@@ -80,4 +100,8 @@ async def get_response(
         
         logger.info(f"Record for question: {question} was saved in database")
         
-    return StreamingResponse(generate(), media_type="text/event-stream")
+    return StreamingResponse(
+        generate(),
+        media_type="text/event-stream",
+        headers={"X-Thread-Id": str(thread_id)}     # Adding thread_id to header
+        )
