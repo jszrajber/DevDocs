@@ -13,6 +13,7 @@ class Conversation(Base):
 
     # PyUUID is a typehint, UUID is postgres column and uuid.4 as function creating UUID value
     id: Mapped[PyUUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    thread_id: Mapped[PyUUID] = mapped_column(UUID(as_uuid=True), nullable=False)
     question: Mapped[str] = mapped_column(String(255), nullable=False)
     answer: Mapped[str] = mapped_column(String, nullable=True)
     confidence: Mapped[str] = mapped_column(String(10), nullable=False)

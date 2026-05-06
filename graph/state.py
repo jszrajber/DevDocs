@@ -1,5 +1,6 @@
 from typing import TypedDict, List
 from langchain_core.documents import Document
+from langchain_core.messages import BaseMessage
 
 
 class State(TypedDict):
@@ -10,3 +11,4 @@ class State(TypedDict):
     reason: str
     scores: List[float]
     confidence: str
+    chat_history: List[BaseMessage]

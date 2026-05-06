@@ -5,7 +5,6 @@ from langchain_postgres import PGVector
 from langchain_core.documents import Document
 from langchain_ollama import OllamaEmbeddings
 from ..config.settings import settings
-from langchain_community.vectorstores import FAISS  # For dev purpose
 
 embeddings = OllamaEmbeddings(model="nomic-embed-text-v2-moe")
 

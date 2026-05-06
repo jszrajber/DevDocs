@@ -4,6 +4,7 @@ from .nodes.is_safe import is_safe_node
 from .nodes.reranker import reranker_node
 from .nodes.answer import answer_node
 from .state import State
+from .checkpointer import checkpointer
 
 graph = StateGraph(State)
 

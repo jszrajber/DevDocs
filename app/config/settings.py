@@ -23,6 +23,13 @@ class Settings(BaseSettings):
         Vectors are created synchronously
         """
         return f"postgresql+psycopg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:5432/{self.POSTGRES_DB}"
+    
+    @property
+    def POSTGRESSAVER_URL(self) -> str:
+        """
+        For PostgresSaver
+        """
+        return f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:5432/{self.POSTGRES_DB}"
 
     # Shows where to find variables, defines behaviour while loading settings
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")  # Prevents errors if .env contains variables not defined in this class
