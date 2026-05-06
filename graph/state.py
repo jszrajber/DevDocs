@@ -11,4 +11,5 @@ class State(TypedDict):
     reason: str
     scores: List[float]
     confidence: str
+    summary: str
     chat_history: List[BaseMessage]

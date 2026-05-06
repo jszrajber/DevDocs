@@ -10,12 +10,14 @@ model = llm
 prompt = ChatPromptTemplate.from_messages([
     ("system", """
         You are a helpful assistant. Answer the question using the provided context 
-        and the conversation history. 
-        Be detailed and thorough in your answer.
+        and the conversation history. Be detailed and thorough in your answer.
         If you don't know the answer just clearly say "I don't know".
+        
+        Previous conversation summary: {summary}
+        {context}
         """),
     ("placeholder", "{chat_history}"),
-    ("human", "Context: {context}\n\nQuestion: {question}")
+    ("user", "{question}")
 ])
 
 answer_chain = prompt | model | StrOutputParser()
@@ -34,6 +36,7 @@ def format_docs(docs) -> str:
 async def answer_node(state: State) -> dict:
     question = state["question"]
     chat_history = state["chat_history"]
+    summary = state.get("summary", "")
     
     logger.info(f"Preparing answer for question: {question}")
 
@@ -43,6 +46,7 @@ async def answer_node(state: State) -> dict:
         "context": context,
         "question": question,
         "chat_history": chat_history,
+        "summary": summary
     })
     
     confidence = await confidence_chain.ainvoke({"question": question, "answer": answer})
