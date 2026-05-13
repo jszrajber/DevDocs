@@ -32,7 +32,7 @@ curl -N -X POST http://localhost:8000/chat \
 ```
 
 ### Conversation memory
-The assistant remembers previous messages within a conversation using `thread_id`. Pass the same `thread_id` to continue a conversation:
+The assistant remembers previous messages within a conversation using `thread_id`. Pass the same `thread_id` (can be found in response header `X-Thread-Id`) to continue a conversation:
 
 ```bash
 # First message — returns thread_id in X-Thread-Id header
