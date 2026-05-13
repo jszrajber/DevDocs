@@ -1,4 +1,4 @@
-from docs_source.test_source import text
+from backend.docs_source.test_source import text
 from ..config.splitter import splitter
 from ..config.logger import logger, setup_logging
 from langchain_postgres import PGVector

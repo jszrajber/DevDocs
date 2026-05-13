@@ -1,6 +1,6 @@
 from sentence_transformers import CrossEncoder
 from ..state import State
-from app.config.logger import logger
+from backend.app.config.logger import logger
 
 
 # Reranling model config
