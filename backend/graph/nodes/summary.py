@@ -1,8 +1,8 @@
 from langchain_core.prompts import ChatPromptTemplate
-from app.config.llm import llm
+from backend.app.config.llm import llm
 from langchain_core.output_parsers import StrOutputParser
 from ..state import State
-from app.config.logger import logger
+from backend.app.config.logger import logger
 
 """
 Summarization node for more than 10 messages.
@@ -15,6 +15,7 @@ summarize_prompt = ChatPromptTemplate.from_messages([
 ])
 
 summarize_chain = summarize_prompt | llm | StrOutputParser()
+
 
 async def summarize_node(state: State) -> dict:
     question = state["question"]

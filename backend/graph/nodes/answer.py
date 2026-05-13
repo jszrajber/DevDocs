@@ -1,9 +1,9 @@
 from ..state import State
 from langchain_core.prompts import ChatPromptTemplate
-from app.config.llm import llm
+from backend.app.config.llm import llm
 from langchain_core.output_parsers import StrOutputParser
-from app.schemas.response import Confidence
-from app.config.logger import logger
+from backend.app.schemas.response import Confidence
+from backend.app.config.logger import logger
 
 model = llm
 

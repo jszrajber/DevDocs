@@ -1,4 +1,4 @@
-from app.db.base import Base
+from backend.app.db.base import Base
 from sqlalchemy.orm import Mapped, mapped_column
 from uuid import UUID as PyUUID
 import uuid

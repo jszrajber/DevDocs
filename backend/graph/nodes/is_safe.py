@@ -1,8 +1,8 @@
 from ..state import State
 from langchain_core.prompts import ChatPromptTemplate
-from app.schemas.request import SafetyCheck
-from app.config.llm import llm
-from app.config.logger import logger
+from backend.app.schemas.request import SafetyCheck
+from backend.app.config.llm import llm
+from backend.app.config.logger import logger
 
 model = llm.with_structured_output(SafetyCheck)
 

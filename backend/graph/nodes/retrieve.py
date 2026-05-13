@@ -1,8 +1,8 @@
 from ..state import State
 from langchain_postgres import PGVector
-from app.ingestion.process import embeddings
-from app.config.settings import settings
-from app.config.logger import logger
+from backend.app.ingestion.process import embeddings
+from backend.app.config.settings import settings
+from backend.app.config.logger import logger
 
 vectorstore = PGVector(
         embeddings=embeddings,
