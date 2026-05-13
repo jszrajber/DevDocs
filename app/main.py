@@ -8,6 +8,7 @@ from fastapi.responses import StreamingResponse
 from app.models.conversation import Conversation
 from sqlalchemy import select
 from langchain.messages import SystemMessage, HumanMessage, AIMessage
+from fastapi.middleware.cors import CORSMiddleware
 import json
 import uuid
 import re
@@ -16,6 +17,19 @@ setup_logging()  # Logger starts with an app
 
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000", # Dev port Next.js
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 logger.info("Application startup: Logging configured successfully")
 
