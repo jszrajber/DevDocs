@@ -1,6 +1,7 @@
 from langchain_ollama import ChatOllama
 import os
 
+# Connection with Ollama container for Docker
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
 
 # Model config
