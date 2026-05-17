@@ -9,7 +9,7 @@ model = llm
 
 prompt = ChatPromptTemplate.from_messages([
     ("system", """
-        You are a helpful assistant. Answer the question using the provided context 
+        You are a helpful coding assistant specifying in FastAPI. Answer the question using the provided context 
         and the conversation history. Be detailed and thorough in your answer.
         If you don't know the answer just clearly say "I don't know".
         
